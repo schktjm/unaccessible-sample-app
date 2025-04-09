@@ -1,4 +1,4 @@
-import { Tooltip } from "./Tooltip";
+import { EventItem } from "./EventItem";
 
 export interface Event {
   id: number;
@@ -95,21 +95,12 @@ export const WeekView = ({
                     event.endTime
                   );
                   return (
-                    <div
+                    <EventItem
                       key={i}
-                      className={`absolute ${event.color} rounded-md p-2 text-white text-xs shadow-md cursor-pointer transition-all duration-200 ease-in-out hover:translate-y-[-2px] hover:shadow-lg`}
-                      style={{
-                        ...eventStyle,
-                        left: "4px",
-                        right: "4px",
-                      }}
+                      event={event}
+                      eventStyle={eventStyle}
                       onClick={() => onEventClick(event)}
-                    >
-                      <Tooltip message="Click to view details">
-                        <div className="font-medium">{event.title}</div>
-                        <div className="opacity-80 text-[10px] mt-1">{`${event.startTime} - ${event.endTime}`}</div>
-                      </Tooltip>
-                    </div>
+                    />
                   );
                 })}
             </div>

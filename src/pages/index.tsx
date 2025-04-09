@@ -7,6 +7,10 @@ import { CalendarControls } from "../components/CalendarControls";
 import { WeekView, Event } from "../components/WeekView";
 import { EventModal } from "../components/EventModal";
 import { AIPopup } from "../components/AIPopup";
+import {
+  EventCreateModal,
+  EventFormData,
+} from "../components/EventCreateModal";
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -14,6 +18,8 @@ export default function Home() {
   const [typedText, setTypedText] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarVisible(!isSidebarVisible);
@@ -28,6 +34,9 @@ export default function Home() {
     const popupTimer = setTimeout(() => {
       setShowAIPopup(true);
     }, 3000);
+
+    // サンプルイベントをセット
+    setEvents(sampleEvents);
 
     return () => {
       clearTimeout(popupTimer);
@@ -62,12 +71,29 @@ export default function Home() {
     setSelectedEvent(event);
   };
 
+  const handleCreateEvent = (eventData: EventFormData) => {
+    const newEvent: Event = {
+      ...eventData,
+      id: events.length > 0 ? Math.max(...events.map((e) => e.id)) + 1 : 1,
+    };
+    setEvents((prev) => [...prev, newEvent]);
+    setShowCreateModal(false);
+  };
+
+  const handleOpenCreateModal = () => {
+    setShowCreateModal(true);
+  };
+
+  const handleCloseCreateModal = () => {
+    setShowCreateModal(false);
+  };
+
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
   };
 
   // Sample calendar events
-  const events = [
+  const sampleEvents = [
     {
       id: 1,
       title: "チームミーティング",
@@ -292,6 +318,7 @@ export default function Home() {
           miniCalendarDays={miniCalendarDays}
           myCalendars={myCalendars}
           isVisible={isSidebarVisible}
+          onCreateButtonClick={handleOpenCreateModal}
         />
 
         {/* Calendar View */}
@@ -333,6 +360,17 @@ export default function Home() {
           weekDates={weekDates}
           currentMonth={currentMonth}
           onClose={() => setSelectedEvent(null)}
+        />
+      )}
+
+      {/* イベント作成モーダル */}
+      {showCreateModal && (
+        <EventCreateModal
+          weekDays={weekDays}
+          weekDates={weekDates}
+          currentMonth={currentMonth}
+          onClose={handleCloseCreateModal}
+          onSave={handleCreateEvent}
         />
       )}
     </div>

@@ -11,6 +11,7 @@ interface SidebarProps {
   miniCalendarDays: (number | null)[];
   myCalendars: Calendar[];
   isVisible: boolean;
+  onCreateButtonClick: () => void;
 }
 
 export const Sidebar = ({
@@ -19,6 +20,7 @@ export const Sidebar = ({
   miniCalendarDays,
   myCalendars,
   isVisible,
+  onCreateButtonClick,
 }: SidebarProps) => {
   return (
     <div
@@ -30,7 +32,10 @@ export const Sidebar = ({
       style={{ animationDelay: "0.4s" }}
     >
       <div>
-        <button className="mb-6 flex items-center justify-center gap-2 rounded-full bg-blue-500 px-4 py-3 text-white w-full">
+        <button
+          className="mb-6 flex items-center justify-center gap-2 rounded-full bg-blue-500 px-4 py-3 text-white w-full hover:bg-blue-400 hover:translate-y-[-2px]  hover:shadow-lg shadow-md transition-all"
+          onClick={onCreateButtonClick}
+        >
           <Plus className="h-5 w-5" />
           <span>作成</span>
         </button>
@@ -86,7 +91,10 @@ export const Sidebar = ({
       </div>
 
       {/* New position for the big plus button */}
-      <button className="mt-6 flex items-center justify-center gap-2 rounded-full bg-blue-500 p-4 text-white w-14 h-14 self-start">
+      <button
+        className="mt-6 flex items-center justify-center gap-2 rounded-full bg-blue-500 p-4 text-white w-14 h-14 self-start"
+        onClick={onCreateButtonClick}
+      >
         <Plus className="h-6 w-6" />
       </button>
     </div>
